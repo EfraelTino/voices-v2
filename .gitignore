@@ -1,0 +1,43 @@
+# --- 🐍 Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+
+# --- 📦 Entornos Virtuales (Venv) ---
+# Ignora la carpeta donde instalaste las librerías (pesa mucho y no se sube)
+venv/
+.venv/
+env/
+ENV/
+
+# --- 🔐 Seguridad y Configuración ---
+# CRÍTICO: Nunca subas tus claves o tokens
+.env
+.env.local
+.env.backup
+
+# --- 🛠️ IDEs y Editores ---
+# Configuraciones de tu editor que no le sirven a nadie más
+.vscode/
+.idea/
+*.swp
+
+# --- 🪟 Sistema Operativo ---
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# --- 🎵 Archivos de Audio ---
+# Ignora audios sueltos que se puedan generar por pruebas
+*.mp3
+*.wav
+
+# --- 🚨 EXCEPCIONES (Lo que SÍ queremos subir) ---
+# Queremos ignorar todos los mp3, PERO necesitamos los del casting para que la web funcione.
+# El signo '!' significa "No ignorar esto".
+static/casting/*.mp3
+static/casting/*.wav
+muestras_voces
+kokoro-v0_19.onnx
+voices.json
+voices-v1.0.bin

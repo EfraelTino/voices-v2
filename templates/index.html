@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Voceape</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <style>
+        body {
+            font-family:
+                "Inter",
+                -apple-system,
+                sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        ::-webkit-scrollbar {
+            width: 0;
+            background: transparent;
+        }
+
+        /* Voice cards */
+        .voice-card {
+            transition: all 0.2s ease;
+        }
+
+        .voice-card.selected {
+            border-color: #00c951 !important;
+            background: #faf9ff;
+        }
+
+        .voice-card.selected .vc-avatar {
+            background: #00c951;
+            color: white;
+        }
+
+        .voice-card.selected .check-icon {
+            display: block !important;
+        }
+
+        /* Composer */
+        .composer {
+            transition:
+                border-color 0.2s,
+                box-shadow 0.2s;
+        }
+
+        .composer:focus-within {
+            border-color: #00cc52;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Chat bubbles */
+        .msg-row {
+            animation: fadeUp 0.3s ease-out;
+        }
+
+        .msg-actions {
+            opacity: 0;
+            transition: opacity 0.15s;
+        }
+
+        .msg-row:hover .msg-actions {
+            opacity: 1;
+        }
+
+        /* Audio card */
+        .audio-card {
+            animation: fadeUp 0.35s ease-out;
+        }
+
+        /* Loading dots */
+        .loading-dots {
+            display: none;
+        }
+
+        .loading-dots.active {
+            display: flex;
+        }
+
+        .loading-dots span {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #b0b0b8;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+
+        .loading-dots span:nth-child(1) {
+            animation-delay: -0.32s;
+        }
+
+        .loading-dots span:nth-child(2) {
+            animation-delay: -0.16s;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+
+            0%,
+            80%,
+            100% {
+                transform: scale(0);
+            }
+
+            40% {
+                transform: scale(1);
+            }
+        }
+
+        /* ── Custom Audio Player ── */
+        .custom-player {
+            background: #000000;
+            border-radius: 12px;
+            padding: 14px 16px;
+            margin-bottom: 10px;
+        }
+
+        .player-top {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .player-play-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #00c951;
+            border: none;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition:
+                background 0.15s,
+                transform 0.1s;
+        }
+
+        .player-play-btn:hover {
+            background: #00c951;
+        }
+
+        .player-play-btn:active {
+            transform: scale(0.93);
+        }
+
+        .player-play-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .player-play-btn .icon-pause {
+            display: none;
+        }
+
+        .player-play-btn.playing .icon-play {
+            display: none;
+        }
+
+        .player-play-btn.playing .icon-pause {
+            display: block;
+        }
+
+        .player-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .player-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #ffffff;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .player-subtitle {
+            font-size: 10px;
+            color: #c6c6c6;
+            margin-top: 1px;
+        }
+
+        .player-time-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .player-time {
+            font-size: 10px;
+            color: #c6c6c6;
+            font-variant-numeric: tabular-nums;
+            min-width: 34px;
+            flex-shrink: 0;
+        }
+
+        .player-time.right {
+            text-align: right;
+        }
+
+        /* Progress bar */
+        .player-progress-wrap {
+            flex: 1;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .player-progress-bg {
+            width: 100%;
+            height: 4px;
+            background: #2d2d4a;
+            border-radius: 2px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .player-progress-fill {
+            height: 100%;
+            background: #00c951;
+            border-radius: 2px;
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        .player-progress-wrap:hover .player-progress-bg {
+            height: 5px;
+        }
+
+        .player-progress-wrap:hover .player-progress-thumb {
+            opacity: 1;
+        }
+
+        .player-progress-thumb {
+            position: absolute;
+            top: 50%;
+            left: 0%;
+            transform: translate(-50%, -50%);
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #fff;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+            opacity: 0;
+            transition: opacity 0.15s;
+            pointer-events: none;
+        }
+
+        /* Speed button */
+        .player-speed-btn {
+            padding: 2px 8px;
+            border-radius: 6px;
+            border: 1px solid #e9e9e9;
+            background: transparent;
+            color: #9a9ab8;
+            font-size: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: all 0.15s;
+        }
+
+        .player-speed-btn:hover {
+            border-color: #00c951;
+            color: #f7f7ff;
+        }
+
+        /* Skip buttons */
+        .player-skip-btn {
+            background: none;
+            border: none;
+            color: #dcdcdc;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.15s;
+            flex-shrink: 0;
+        }
+
+        .player-skip-btn:hover {
+            color: #e8e8e8;
+        }
+
+        .player-skip-btn svg {
+            width: 14px;
+            height: 14px;
+        }
+    </style>
+</head>
+
+<body class="bg-[#f7f7f8] text-[#1a1a1a] h-[100dvh] flex flex-col overflow-hidden">
+
+    <!-- ═══ CHAT AREA ═══ -->
+    <div class="flex-1 overflow-y-auto px-4 md:px-6 pb-52  pt-16" id="scroll-area">
+        <div class="max-w-[720px] mx-auto">
+
+            <!-- Welcome -->
+            <div id="welcome-section" class="text-center">
+                <div class="w-16 h-16 flex items-center justify-center mx-auto mb-5">
+                    <img src="static/logos/icono.svg" />
+                </div>
+                <div class="flex justify-center text-center mb-1">
+                    <img src="static/logos/voceape.svg" alt="" class="w-40">
+                </div>
+                <p class="text-sm text-slate-700">Elige una voz y escribe tu texto para generar audio.</p>
+
+                <!-- Voice Grid (Jinja) -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 mt-8 max-w-[620px] mx-auto">
+                    {% for id, data in voces_populares.items() %}
+                    <div class="voice-card bg-white border border-[#e8e8eb] rounded-xl p-3.5 cursor-pointer text-left relative group hover:border-[#c7c7cd] hover:shadow-sm"
+                        onclick="seleccionarVoz('{{ id }}', '{{ data.nombre }}', this)">
+
+                        <!-- Check icon (hidden until selected) -->
+                        <div class="check-icon hidden absolute bottom-2.5 right-3 text-green-500">
+                            <i data-lucide="check" class="w-4 h-4"></i>
+                        </div>
+
+                        <div class="flex items-center justify-between mb-2.5">
+                            <div
+                                class="vc-avatar w-8 h-8 rounded-full bg-[#f0f0f3] flex items-center justify-center text-[10px] font-bold text-[#888]">
+                                {{ data.pais[:2] }}
+                            </div>
+                            <button type="button" onclick="playPreview(event, '{{ data.demo }}')"
+                                class="z-10 w-7 h-7 rounded-full bg-[#f0f0f3] text-[#999] flex items-center justify-center hover:bg-green-500 hover:text-white transition">
+                                <i data-lucide="play" class="w-2.5 h-2.5 fill-current ml-0.5"></i>
+                            </button>
+                        </div>
+                        <h3 class="text-[13px] font-semibold text-[#1a1a1a] mb-0.5">{{ data.nombre }}</h3>
+                        <p class="text-[11px] text-[#aaa] leading-snug line-clamp-2">{{ data.desc }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="flex justify-center mt-6 mb-10">
+                    <a href="voices"
+                        class="group inline-flex items-center gap-2 px-5 py-2 bg-white border border-[#e8e8eb] rounded-lg shadow-sm text-[12px] font-medium text-[#555] hover:text-green-600 hover:border-green-200 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 no-underline">
+
+                        <span>Explorar todas las voces</span>
+
+                        <i data-lucide="arrow-right" class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Day divider -->
+            <div id="day-divider"
+                class="hidden text-center text-[11px] font-medium text-[#b0b0b8] uppercase tracking-wide my-6 relative before:content-[''] before:absolute before:top-1/2 before:left-0 before:w-[calc(50%-30px)] before:h-px before:bg-[#e8e8eb] after:content-[''] after:absolute after:top-1/2 after:right-0 after:w-[calc(50%-30px)] after:h-px after:bg-[#e8e8eb]">
+                HOY
+            </div>
+
+            <!-- Messages container -->
+            <div id="resultados" class="space-y-6"></div>
+
+            <!-- Loading dots -->
+            <div class="loading-dots items-center gap-1 py-2 ml-1" id="loading-dots">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ COMPOSER ═══ -->
+    <div
+        class="absolute bottom-0 left-0 right-0 px-4 md:px-6 pb-5 pt-8 bg-gradient-to-t from-[#f7f7f8] via-[#f7f7f8] to-transparent z-50">
+        <div class="max-w-[720px] mx-auto">
+            <div id="promo-banner"
+                class="mx-auto text-center transition-all duration-700 ease-out opacity-0 translate-y-4 max-h-0 overflow-hidden mb-0">
+
+                <a href="https://www.youtube.com/@TUCANAL?sub_confirmation=1" target="_blank"
+                    class="group inline-flex items-center gap-2 bg-black text-white text-[12px] font-medium py-1.5 px-5 rounded-lg shadow-lg hover:bg-[#222] transition-all duration-300 cursor-pointer border border-[#333]">
+
+                    <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 text-red-600">
+                        <path
+                            d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                    </svg>
+
+                    <span>Suscríbete a mi canal</span>
+                </a>
+
+            </div>
+            <div
+                class="composer bg-white border border-[#e0e0e5] rounded-2xl px-4 pt-3 pb-2.5 shadow-[0_2px_20px_rgba(0,0,0,0.06)]">
+                <!-- Textarea -->
+                <div class="flex items-end gap-2">
+                    <textarea id="texto-input" rows="1"
+                        class="flex-1 bg-transparent text-sm text-[#1a1a1a] placeholder-[#b8b8c0] focus:outline-none resize-none max-h-[120px] min-h-[24px] py-1"
+                        placeholder="Escribe el texto para generar audio..."></textarea>
+                </div>
+                <!-- Bottom bar -->
+                <div class="flex items-center justify-between mt-2.5 pt-2.5 border-t border-[#f0f0f3]">
+                    <div class="flex items-center gap-3 relative">
+
+                        <div id="voice-menu"
+                            class="hidden absolute bottom-full left-0 mb-2 w-64 max-h-64 overflow-y-auto bg-white border border-[#e8e8eb] rounded-2xl shadow-xl z-50 p-1.5 custom-scrollbar">
+
+                            <div class="sticky top-0 bg-white pb-1.5 z-10">
+                                <div class="relative">
+                                    <i data-lucide="search"
+                                        class="w-3 h-3 absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                                    <input type="text" id="voice-search-input" onkeyup="filterVoices()"
+                                        placeholder="Buscar voz..."
+                                        class="w-full pl-8 pr-3 py-1.5 bg-[#f7f7f8] border-none rounded-lg text-[11px] focus:ring-1 focus:ring-green-500/30 outline-none">
+                                </div>
+                            </div>
+
+                            <div id="voice-list-container">
+                                {% for id, data in todas_las_voces.items() %}
+                                <button onclick="seleccionarVoz('{{ id }}', '{{ data.nombre }}', null, true)"
+                                    class="voice-option-item w-full text-left px-3 py-2 text-[12px] font-medium text-[#1a1a1a] rounded-lg hover:bg-[#f7f7f8] flex items-center justify-between group transition-colors"
+                                    data-voice-name="{{ data.nombre | lower }}">
+                                    <span class="flex items-center gap-2">
+                                        <span
+                                            class="w-5 h-5 rounded-full bg-[#f0f0f3] flex items-center justify-center text-[9px] text-[#888]">
+                                            {{ data.pais[:2] }}
+                                        </span>
+                                        {{ data.nombre }}
+                                    </span>
+                                    <i data-lucide="check"
+                                        class="w-3.5 h-3.5 text-green-500 opacity-0 group-[.active]:opacity-100 transition-opacity"></i>
+                                </button>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <button onclick="toggleVoiceMenu()" id="voice-selector-btn" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[12px] font-medium transition active:scale-95 border 
+           bg-red-50 text-red-600 border-red-200 hover:bg-red-100 animate-pulse">
+
+                            <i data-lucide="mic" class="w-3.5 h-3.5 text-red-500"></i>
+                            <span id="voice-selector-name" class="truncate max-w-[100px]">Selecciona voz</span>
+                            <i data-lucide="chevron-up" class="w-3 h-3 text-red-400 ml-1"></i>
+                        </button>
+
+                        <span id="char-count" class="text-[11px] text-[#ccc] font-medium">0 car.</span>
+                    </div>
+                    <div class="flex gap-2 items-center">
+                        <a href="/voices" class="text-[11px] underline text-[#555] hover:text-green-500 transition-colors">Explorar voces</a>
+                        <button onclick="generarAudioFinal()" id="btn-enviar" disabled
+                        class="flex items-center gap-1.5 px-4 py-[7px] rounded-[10px] bg-[#18181b] text-white text-[13px] font-medium hover:bg-[#333] disabled:opacity-30 disabled:cursor-not-allowed transition active:scale-95">
+                        <i data-lucide="arrow-up" class="w-3.5 h-3.5"></i>
+                        Enviar
+                    </button>
+                    </div>
+                </div>
+            </div>
+        {% include "footer.html" %}
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+        const banner = document.getElementById('promo-banner');
+        let vozSeleccionadaID = null;
+        let audioPreviewActual = new Audio();
+
+        // ── Preview audio ──
+        function playPreview(event, url) {
+            event.stopPropagation();
+            event.preventDefault();
+            if (!audioPreviewActual.paused) {
+                audioPreviewActual.pause();
+                if (audioPreviewActual.src.includes(url)) return;
+            }
+            audioPreviewActual.src = url;
+            audioPreviewActual.play().catch(e => console.error("Error audio:", e));
+        }
+
+        // ── Select voice ──
+        function seleccionarVoz(id, nombre, elementoCard) {
+            vozSeleccionadaID = id;
+            document.querySelectorAll('.voice-card').forEach(c => {
+                c.classList.remove('selected');
+                c.querySelector('.check-icon').classList.add('hidden');
+            });
+            elementoCard.classList.add('selected');
+            elementoCard.querySelector('.check-icon').classList.remove('hidden');
+
+            const tag = document.getElementById('voice-tag');
+            tag.classList.remove('hidden');
+            tag.classList.add('flex');
+            document.getElementById('voice-tag-name').textContent = nombre;
+            document.getElementById('btn-enviar').disabled = false;
+        }
+
+        // ── Textarea auto-resize ──
+        const textarea = document.getElementById('texto-input');
+        const charCount = document.getElementById('char-count');
+        const MAX_CHARS = 2000; // Límite sincronizado con tu Python
+        textarea.addEventListener('input', function () {
+            this.style.height = 'auto';
+            this.style.height = this.scrollHeight + 'px';
+            if (this.value === '') this.style.height = 'auto';
+
+            // Contador y Validación Visual
+            const currentLength = this.value.length;
+            charCount.innerText = `${currentLength} / ${MAX_CHARS}`;
+
+            // Si se pasa (aunque el HTML debería bloquearlo, esto es visual)
+            if (currentLength >= MAX_CHARS) {
+                charCount.classList.add('text-red-500');
+                charCount.classList.remove('text-gray-400');
+            } else {
+                charCount.classList.remove('text-red-500');
+                charCount.classList.add('text-gray-400');
+            }
+        });
+
+        // ── Enter to send ──
+        textarea.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                generarAudioFinal();
+            }
+        });
+
+        // ── Helpers ──
+        function showChatMode() {
+            const welcome = document.getElementById('welcome-section');
+            const divider = document.getElementById('day-divider');
+            if (welcome.style.display !== 'none') {
+                welcome.style.display = 'none';
+                divider.classList.remove('hidden');
+            }
+        }
+
+        function addUserBubble(text) {
+            showChatMode();
+            const resultados = document.getElementById('resultados');
+            const row = document.createElement('div');
+            row.className = 'msg-row flex justify-end';
+            row.innerHTML = `
+                <div class="max-w-[480px] bg-white rounded-[18px_18px_4px_18px] px-4 py-3">
+                    <div class="flex items-center justify-end gap-1.5 mb-1">
+                        <span class="text-[11px] font-semibold text-[#666]">Yo</span>
+                        <span class="text-[11px] text-[#b0b0b8]">· justo ahora</span>
+                    </div>
+                    <p class="text-sm text-[#1a1a1a] leading-relaxed">${text}</p>
+                </div>
+            `;
+            resultados.appendChild(row);
+            scrollToBottom();
+        }
+
+        let playerIdCounter = 0;
+
+        function formatTime(sec) {
+            if (isNaN(sec)) return '0:00';
+            const m = Math.floor(sec / 60);
+            const s = Math.floor(sec % 60);
+            return m + ':' + String(s).padStart(2, '0');
+        }
+
+        function addAudioCard(text, audioUrl) {
+            const pid = 'player-' + (++playerIdCounter);
+            const resultados = document.getElementById('resultados');
+            const row = document.createElement('div');
+            row.className = 'msg-row flex justify-start';
+            row.innerHTML = `
+                <div class="max-w-[440px] w-full">
+                    <div class="flex items-center gap-1.5 mb-1.5">
+                        <span class="text-[11px] font-semibold text-[#666]">Voceape</span>
+                        <span class="text-[11px] text-[#b0b0b8]">· justo ahora</span>
+                    </div>
+                    <div class="audio-card bg-white border border-[#e8e8eb] rounded-[14px] p-4 relative">
+                        <button class="absolute top-3 right-3 text-[#ccc] hover:text-red-500 hover:bg-red-50 p-1 rounded-md transition" onclick="this.closest('.msg-row').remove()">
+                            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                        </button>
+                        <div class="flex items-center gap-2.5 mb-3">
+                            <div class="w-8 h-8 rounded-lg bg-green-50 flex items-center justify-center">
+                                <i data-lucide="check-circle" class="w-4 h-4 text-green-500"></i>
+                            </div>
+                            <div>
+                                <p class="text-[13px] font-semibold text-[#1a1a1a]">Audio generado</p>
+                                <p class="text-[11px] text-[#b0b0b8]">Hace un momento</p>
+                            </div>
+                        </div>
+                        <p class="text-[13px] text-[#888] italic mb-3 leading-relaxed line-clamp-2">"${text}"</p>
+
+                        <!-- Custom Audio Player -->
+                        <div class="custom-player" id="${pid}">
+                            <audio preload="auto" src="${audioUrl}" id="${pid}-audio"></audio>
+                            <div class="player-top">
+                                <button class="player-play-btn" id="${pid}-playbtn">
+                                    <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+                                    <svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor"><rect x="5" y="3" width="4" height="18" rx="1"/><rect x="15" y="3" width="4" height="18" rx="1"/></svg>
+                                </button>
+                                <div class="player-info">
+                                    <div class="player-title">Audio generado · Voceape.</div>
+                                    <div class="player-subtitle">${text.length > 50 ? text.substring(0, 50) + '...' : text}</div>
+                                </div>
+                                <button class="player-speed-btn" id="${pid}-speed">1x</button>
+                            </div>
+                            <div class="player-time-row">
+                                <button class="player-skip-btn" id="${pid}-skipback" title="Retroceder 5s">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
+                                        <text x="12" y="16" font-size="7" fill="currentColor" stroke="none" text-anchor="middle" font-weight="700">5</text>
+                                    </svg>
+                                </button>
+                                <span class="player-time" id="${pid}-current">0:00</span>
+                                <div class="player-progress-wrap" id="${pid}-progresswrap">
+                                    <div class="player-progress-bg">
+                                        <div class="player-progress-fill" id="${pid}-fill"></div>
+                                    </div>
+                                    <div class="player-progress-thumb" id="${pid}-thumb"></div>
+                                </div>
+                                <span class="player-time right" id="${pid}-duration">0:00</span>
+                                <button class="player-skip-btn" id="${pid}-skipfwd" title="Adelantar 5s">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.13-9.36L23 10"/>
+                                        <text x="12" y="16" font-size="7" fill="currentColor" stroke="none" text-anchor="middle" font-weight="700">5</text>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 grid grid-cols-1 w-full">
+<a href="${audioUrl}" download="voz_ia_${Date.now()}.mp3" 
+       class="group flex items-center justify-between p-3 bg-white border border-[#e8e8eb] rounded-xl shadow-sm hover:shadow-md hover:border-green-300 transition-all duration-200 cursor-pointer text-decoration-none w-full">
+        
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center text-green-600 group-hover:bg-green-500 group-hover:text-white transition-colors">
+                <i data-lucide="download" class="w-5 h-5"></i>
+            </div>
+            
+            <div class="flex flex-col text-left">
+                <span class="text-[10px] font-bold text-[#999] uppercase tracking-wide group-hover:text-green-600 transition-colors">Archivo listo</span>
+                <span class="text-[13px] font-bold text-[#1a1a1a]">Descargar MP3</span>
+            </div>
+        </div>
+
+        <div class="pr-2">
+            <i data-lucide="chevron-right" class="w-5 h-5 text-[#ddd] group-hover:text-green-500 transition-colors"></i>
+        </div>
+    </a>
+</div>
+                    </div>
+                    <div class="msg-actions flex gap-1 mt-2">
+                        <button class="w-7 h-7 rounded-md flex items-center justify-center text-[#b0b0b8] hover:bg-[#f0f0f3] hover:text-[#666] transition">
+                            <i data-lucide="thumbs-up" class="w-3.5 h-3.5"></i>
+                        </button>
+                        <button class="w-7 h-7 rounded-md flex items-center justify-center text-[#b0b0b8] hover:bg-[#f0f0f3] hover:text-[#666] transition">
+                            <i data-lucide="thumbs-down" class="w-3.5 h-3.5"></i>
+                        </button>
+                        <button class="w-7 h-7 rounded-md flex items-center justify-center text-[#b0b0b8] hover:bg-[#f0f0f3] hover:text-[#666] transition">
+                            <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+            resultados.appendChild(row);
+            lucide.createIcons();
+            initPlayer(pid);
+            scrollToBottom();
+        }
+
+        function initPlayer(pid) {
+            const audio = document.getElementById(pid + '-audio');
+            const playBtn = document.getElementById(pid + '-playbtn');
+            const fill = document.getElementById(pid + '-fill');
+            const thumb = document.getElementById(pid + '-thumb');
+            const progressWrap = document.getElementById(pid + '-progresswrap');
+            const currentEl = document.getElementById(pid + '-current');
+            const durationEl = document.getElementById(pid + '-duration');
+            const speedBtn = document.getElementById(pid + '-speed');
+            const skipBack = document.getElementById(pid + '-skipback');
+            const skipFwd = document.getElementById(pid + '-skipfwd');
+
+            const speeds = [1, 1.25, 1.5, 1.75, 2, 0.75];
+            let speedIdx = 0;
+
+            audio.addEventListener('loadedmetadata', () => {
+                durationEl.textContent = formatTime(audio.duration);
+            });
+
+            audio.addEventListener('timeupdate', () => {
+                if (!audio.duration) return;
+                const pct = (audio.currentTime / audio.duration) * 100;
+                fill.style.width = pct + '%';
+                thumb.style.left = pct + '%';
+                currentEl.textContent = formatTime(audio.currentTime);
+            });
+
+            audio.addEventListener('ended', () => {
+                playBtn.classList.remove('playing');
+            });
+
+            playBtn.addEventListener('click', () => {
+                if (audio.paused) {
+                    // Pause all other players
+                    document.querySelectorAll('.custom-player audio').forEach(a => {
+                        if (a !== audio && !a.paused) {
+                            a.pause();
+                            a.closest('.custom-player').querySelector('.player-play-btn').classList.remove('playing');
+                        }
+                    });
+                    audio.play();
+                    playBtn.classList.add('playing');
+                } else {
+                    audio.pause();
+                    playBtn.classList.remove('playing');
+                }
+            });
+
+            // Click/drag on progress bar
+            let dragging = false;
+            function seek(e) {
+                const rect = progressWrap.getBoundingClientRect();
+                let pct = (e.clientX - rect.left) / rect.width;
+                pct = Math.max(0, Math.min(1, pct));
+                audio.currentTime = pct * audio.duration;
+            }
+
+            progressWrap.addEventListener('mousedown', (e) => { dragging = true; seek(e); });
+            document.addEventListener('mousemove', (e) => { if (dragging) seek(e); });
+            document.addEventListener('mouseup', () => { dragging = false; });
+
+            // Touch support
+            progressWrap.addEventListener('touchstart', (e) => { dragging = true; seek(e.touches[0]); }, { passive: true });
+            document.addEventListener('touchmove', (e) => { if (dragging) seek(e.touches[0]); }, { passive: true });
+            document.addEventListener('touchend', () => { dragging = false; });
+
+            // Speed
+            speedBtn.addEventListener('click', () => {
+                speedIdx = (speedIdx + 1) % speeds.length;
+                audio.playbackRate = speeds[speedIdx];
+                speedBtn.textContent = speeds[speedIdx] + 'x';
+            });
+
+            // Skip
+            skipBack.addEventListener('click', () => { audio.currentTime = Math.max(0, audio.currentTime - 5); });
+            skipFwd.addEventListener('click', () => { audio.currentTime = Math.min(audio.duration, audio.currentTime + 5); });
+
+            // Auto-play
+            audio.play().then(() => playBtn.classList.add('playing')).catch(() => { });
+        }
+
+        function addErrorMessage(msg) {
+            const resultados = document.getElementById('resultados');
+            const row = document.createElement('div');
+            row.className = 'msg-row flex justify-start';
+            row.innerHTML = `
+                <div class="max-w-[440px]">
+                    <div class="flex items-center gap-1.5 mb-1.5">
+                        <span class="text-[11px] font-semibold text-[#666]">Voceape</span>
+                        <span class="text-[11px] text-[#b0b0b8]">· justo ahora</span>
+                    </div>
+                    <p class="text-sm text-red-500">⚠️ ${msg}</p>
+                </div>
+            `;
+            resultados.appendChild(row);
+            scrollToBottom();
+        }
+
+        function scrollToBottom() {
+            const area = document.getElementById('scroll-area');
+            setTimeout(() => area.scrollTo({ top: area.scrollHeight, behavior: 'smooth' }), 50);
+        }
+
+        // ── Generate audio (same logic as original) ──
+        async function generarAudioFinal() {
+            const texto = textarea.value.trim();
+            const MAX_CHARS = 2000;
+            if (!texto) return;
+            if (!vozSeleccionadaID) {
+                alert("Por favor selecciona una voz"); // O tu propia UI de error
+                return;
+            }
+            if (texto.length > MAX_CHARS) {
+                addErrorMessage(`El texto es demasiado largo (${texto.length}/${MAX_CHARS}). Por favor, acórtalo.`);
+                return; // 🛑 AQUÍ FRENAMOS TODO
+            }
+            const btn = document.getElementById('btn-enviar');
+            const dots = document.getElementById('loading-dots');
+
+            // Show user message
+            addUserBubble(texto);
+            textarea.value = '';
+            textarea.style.height = 'auto';
+            charCount.innerText = '0 car.';
+
+            btn.disabled = true;
+            dots.classList.add('active');
+            scrollToBottom();
+
+            try {
+                const response = await fetch(`/generar?text=${encodeURIComponent(texto)}&voice=${vozSeleccionadaID}`, { method: 'POST' });
+                if (!response.ok) throw new Error("Error generando audio");
+                const blob = await response.blob();
+                const audioUrl = URL.createObjectURL(blob);
+                addAudioCard(texto, audioUrl);
+                const banner = document.getElementById('promo-banner');
+                // Verificamos si el banner existe y si todavía está oculto
+                if (banner && banner.classList.contains('opacity-0')) {
+                    setTimeout(() => {
+                        banner.classList.remove('opacity-0', 'translate-y-4', 'max-h-0', 'mb-0');
+                        banner.classList.add('opacity-100', 'translate-y-0', 'max-h-20', 'mb-3');
+                    }, 800); // Le subí a 800ms para que sea más suave después de ver el audio
+                }
+            } catch (e) {
+                addErrorMessage("Ocurrió un error: " + e.message);
+            } finally {
+                btn.disabled = false;
+                dots.classList.remove('active');
+            }
+        }
+        // ── Logic for Voice Dropdown ──
+
+        function toggleVoiceMenu() {
+            const menu = document.getElementById('voice-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Cierra el menú si haces clic fuera de él
+        document.addEventListener('click', function (event) {
+            const menu = document.getElementById('voice-menu');
+            const btn = document.getElementById('voice-selector-btn');
+            if (!menu.classList.contains('hidden') && !menu.contains(event.target) && !btn.contains(event.target)) {
+                menu.classList.add('hidden');
+            }
+        });
+
+        // ── Actualiza la función seleccionarVoz existente ──
+        function seleccionarVoz(id, nombre, elementoCard = null, fromDropdown = false) {
+            vozSeleccionadaID = id;
+
+            // 1. Actualizar Grid Principal (Tarjetas grandes)
+            // ----------------------------------------------
+            document.querySelectorAll('.voice-card').forEach(c => {
+                c.classList.remove('selected');
+                c.querySelector('.check-icon').classList.add('hidden');
+            });
+
+            if (fromDropdown) {
+                // Si vino del menú desplegable, buscamos la tarjeta correspondiente en el grid
+                const cards = document.querySelectorAll('.voice-card');
+                cards.forEach(card => {
+                    if (card.getAttribute('onclick').includes(id)) {
+                        card.classList.add('selected');
+                        card.querySelector('.check-icon').classList.remove('hidden');
+                    }
+                });
+            } else if (elementoCard) {
+                // Si vino del clic directo en la tarjeta
+                elementoCard.classList.add('selected');
+                elementoCard.querySelector('.check-icon').classList.remove('hidden');
+            }
+
+            // 2. Actualizar el Botón Selector (Abajo) - AQUÍ ESTÁ EL CAMBIO
+            // -------------------------------------------------------------
+            const btn = document.getElementById('voice-selector-btn');
+            const nameSpan = document.getElementById('voice-selector-name');
+
+            // A. QUITAMOS el estado de urgencia (Rojo y Animación)
+            // Eliminamos todas las clases relacionadas con el estilo rojo
+            btn.classList.remove('bg-red-50', 'text-red-600', 'border-red-200', 'hover:bg-red-100', 'animate-pulse');
+
+            // B. PONEMOS el estado de "Listo" (Verde)
+            btn.classList.add('bg-green-50', 'text-green-700', 'border-green-200');
+
+            // Actualizar texto del botón
+            nameSpan.textContent = nombre;
+
+            // Actualizar icono del micrófono (De Rojo a Verde)
+            const micIcon = btn.querySelector('[data-lucide="mic"]');
+            if (micIcon) {
+                micIcon.classList.remove('text-red-500'); // Quitar rojo
+                micIcon.classList.add('text-green-600'); // Poner verde
+            }
+
+            // Actualizar icono de la flechita (De Rojo a Verde/Gris)
+            const chevronIcon = btn.querySelector('[data-lucide="chevron-up"]');
+            if (chevronIcon) {
+                chevronIcon.classList.remove('text-red-400'); // Quitar rojo
+                chevronIcon.classList.add('text-green-600', 'opacity-50'); // Poner verde sutil
+            }
+
+
+            // 3. Actualizar la lista del Dropdown (Poner check al item seleccionado)
+            // --------------------------------------------------------------------
+            document.querySelectorAll('#voice-menu button').forEach(item => {
+                item.classList.remove('active', 'bg-[#f7f7f8]');
+                const check = item.querySelector('[data-lucide="check"]');
+                if (check) check.classList.add('opacity-0');
+
+                if (item.dataset.voiceId === id) {
+                    item.classList.add('active', 'bg-[#f7f7f8]');
+                    if (check) check.classList.remove('opacity-0');
+                }
+            });
+
+            // 4. Finalización
+            // ---------------
+            // Habilitar botón de enviar
+            document.getElementById('btn-enviar').disabled = false;
+
+            // Cerrar el menú
+            document.getElementById('voice-menu').classList.add('hidden');
+
+            // Refrescar iconos
+            lucide.createIcons();
+        }
+        function filterVoices() {
+            const input = document.getElementById('voice-search-input');
+            const filter = input.value.toLowerCase();
+            const container = document.getElementById('voice-list-container');
+            const options = container.getElementsByClassName('voice-option-item');
+
+            for (let i = 0; i < options.length; i++) {
+                const name = options[i].getAttribute('data-voice-name');
+                if (name.includes(filter)) {
+                    options[i].style.display = "flex";
+                } else {
+                    options[i].style.display = "none";
+                }
+            }
+        }
+
+        // Opcional: Limpiar buscador al abrir el menú
+        function toggleVoiceMenu() {
+            const menu = document.getElementById('voice-menu');
+            menu.classList.toggle('hidden');
+
+            if (!menu.classList.contains('hidden')) {
+                const input = document.getElementById('voice-search-input');
+                input.value = ''; // Limpiar búsqueda previa
+                filterVoices();   // Mostrar todas las voces
+                input.focus();    // Poner el cursor listo para escribir
+            }
+        }
+    </script>
+</body>
+
+</html>

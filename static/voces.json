@@ -1,0 +1,362 @@
+{
+    "es-AR-ElenaNeural": {
+        "nombre": "Elena",
+        "pais": "AR",
+        "bandera": "🇦🇷",
+        "genero": "Female",
+        "demo": "/static/casting/es-AR-ElenaNeural.mp3",
+        "desc": "Voz Female de AR"
+    },
+    "es-AR-TomasNeural": {
+        "nombre": "Tomas",
+        "pais": "AR",
+        "bandera": "🇦🇷",
+        "genero": "Male",
+        "demo": "/static/casting/es-AR-TomasNeural.mp3",
+        "desc": "Voz Male de AR"
+    },
+    "es-BO-MarceloNeural": {
+        "nombre": "Marcelo",
+        "pais": "BO",
+        "bandera": "🇧🇴",
+        "genero": "Male",
+        "demo": "/static/casting/es-BO-MarceloNeural.mp3",
+        "desc": "Voz Male de BO"
+    },
+    "es-BO-SofiaNeural": {
+        "nombre": "Sofia",
+        "pais": "BO",
+        "bandera": "🇧🇴",
+        "genero": "Female",
+        "demo": "/static/casting/es-BO-SofiaNeural.mp3",
+        "desc": "Voz Female de BO"
+    },
+    "es-CL-CatalinaNeural": {
+        "nombre": "Catalina",
+        "pais": "CL",
+        "bandera": "🇨🇱",
+        "genero": "Female",
+        "demo": "/static/casting/es-CL-CatalinaNeural.mp3",
+        "desc": "Voz Female de CL"
+    },
+    "es-CL-LorenzoNeural": {
+        "nombre": "Lorenzo",
+        "pais": "CL",
+        "bandera": "🇨🇱",
+        "genero": "Male",
+        "demo": "/static/casting/es-CL-LorenzoNeural.mp3",
+        "desc": "Voz Male de CL"
+    },
+    "es-CO-GonzaloNeural": {
+        "nombre": "Gonzalo",
+        "pais": "CO",
+        "bandera": "🇨🇴",
+        "genero": "Male",
+        "demo": "/static/casting/es-CO-GonzaloNeural.mp3",
+        "desc": "Voz Male de CO"
+    },
+    "es-CO-SalomeNeural": {
+        "nombre": "Salome",
+        "pais": "CO",
+        "bandera": "🇨🇴",
+        "genero": "Female",
+        "demo": "/static/casting/es-CO-SalomeNeural.mp3",
+        "desc": "Voz Female de CO"
+    },
+    "es-ES-XimenaNeural": {
+        "nombre": "Ximena",
+        "pais": "ES",
+        "bandera": "🇪🇸",
+        "genero": "Female",
+        "demo": "/static/casting/es-ES-XimenaNeural.mp3",
+        "desc": "Voz Female de ES"
+    },
+    "es-CR-JuanNeural": {
+        "nombre": "Juan",
+        "pais": "CR",
+        "bandera": "🇨🇷",
+        "genero": "Male",
+        "demo": "/static/casting/es-CR-JuanNeural.mp3",
+        "desc": "Voz Male de CR"
+    },
+    "es-CR-MariaNeural": {
+        "nombre": "Maria",
+        "pais": "CR",
+        "bandera": "🇨🇷",
+        "genero": "Female",
+        "demo": "/static/casting/es-CR-MariaNeural.mp3",
+        "desc": "Voz Female de CR"
+    },
+    "es-CU-BelkysNeural": {
+        "nombre": "Belkys",
+        "pais": "CU",
+        "bandera": "🇨🇺",
+        "genero": "Female",
+        "demo": "/static/casting/es-CU-BelkysNeural.mp3",
+        "desc": "Voz Female de CU"
+    },
+    "es-CU-ManuelNeural": {
+        "nombre": "Manuel",
+        "pais": "CU",
+        "bandera": "🇨🇺",
+        "genero": "Male",
+        "demo": "/static/casting/es-CU-ManuelNeural.mp3",
+        "desc": "Voz Male de CU"
+    },
+    "es-DO-EmilioNeural": {
+        "nombre": "Emilio",
+        "pais": "DO",
+        "bandera": "🇩🇴",
+        "genero": "Male",
+        "demo": "/static/casting/es-DO-EmilioNeural.mp3",
+        "desc": "Voz Male de DO"
+    },
+    "es-DO-RamonaNeural": {
+        "nombre": "Ramona",
+        "pais": "DO",
+        "bandera": "🇩🇴",
+        "genero": "Female",
+        "demo": "/static/casting/es-DO-RamonaNeural.mp3",
+        "desc": "Voz Female de DO"
+    },
+    "es-EC-AndreaNeural": {
+        "nombre": "Andrea",
+        "pais": "EC",
+        "bandera": "🇪🇨",
+        "genero": "Female",
+        "demo": "/static/casting/es-EC-AndreaNeural.mp3",
+        "desc": "Voz Female de EC"
+    },
+    "es-EC-LuisNeural": {
+        "nombre": "Luis",
+        "pais": "EC",
+        "bandera": "🇪🇨",
+        "genero": "Male",
+        "demo": "/static/casting/es-EC-LuisNeural.mp3",
+        "desc": "Voz Male de EC"
+    },
+    "es-SV-LorenaNeural": {
+        "nombre": "Lorena",
+        "pais": "SV",
+        "bandera": "🇸🇻",
+        "genero": "Female",
+        "demo": "/static/casting/es-SV-LorenaNeural.mp3",
+        "desc": "Voz Female de SV"
+    },
+    "es-SV-RodrigoNeural": {
+        "nombre": "Rodrigo",
+        "pais": "SV",
+        "bandera": "🇸🇻",
+        "genero": "Male",
+        "demo": "/static/casting/es-SV-RodrigoNeural.mp3",
+        "desc": "Voz Male de SV"
+    },
+    "es-GQ-JavierNeural": {
+        "nombre": "Javier",
+        "pais": "GQ",
+        "bandera": "🌐",
+        "genero": "Male",
+        "demo": "/static/casting/es-GQ-JavierNeural.mp3",
+        "desc": "Voz Male de GQ"
+    },
+    "es-GQ-TeresaNeural": {
+        "nombre": "Teresa",
+        "pais": "GQ",
+        "bandera": "🌐",
+        "genero": "Female",
+        "demo": "/static/casting/es-GQ-TeresaNeural.mp3",
+        "desc": "Voz Female de GQ"
+    },
+    "es-GT-AndresNeural": {
+        "nombre": "Andres",
+        "pais": "GT",
+        "bandera": "🇬🇹",
+        "genero": "Male",
+        "demo": "/static/casting/es-GT-AndresNeural.mp3",
+        "desc": "Voz Male de GT"
+    },
+    "es-GT-MartaNeural": {
+        "nombre": "Marta",
+        "pais": "GT",
+        "bandera": "🇬🇹",
+        "genero": "Female",
+        "demo": "/static/casting/es-GT-MartaNeural.mp3",
+        "desc": "Voz Female de GT"
+    },
+    "es-HN-CarlosNeural": {
+        "nombre": "Carlos",
+        "pais": "HN",
+        "bandera": "🇭🇳",
+        "genero": "Male",
+        "demo": "/static/casting/es-HN-CarlosNeural.mp3",
+        "desc": "Voz Male de HN"
+    },
+    "es-HN-KarlaNeural": {
+        "nombre": "Karla",
+        "pais": "HN",
+        "bandera": "🇭🇳",
+        "genero": "Female",
+        "demo": "/static/casting/es-HN-KarlaNeural.mp3",
+        "desc": "Voz Female de HN"
+    },
+    "es-MX-DaliaNeural": {
+        "nombre": "Dalia",
+        "pais": "MX",
+        "bandera": "🇲🇽",
+        "genero": "Female",
+        "demo": "/static/casting/es-MX-DaliaNeural.mp3",
+        "desc": "Voz Female de MX"
+    },
+    "es-MX-JorgeNeural": {
+        "nombre": "Jorge",
+        "pais": "MX",
+        "bandera": "🇲🇽",
+        "genero": "Male",
+        "demo": "/static/casting/es-MX-JorgeNeural.mp3",
+        "desc": "Voz Male de MX"
+    },
+    "es-NI-FedericoNeural": {
+        "nombre": "Federico",
+        "pais": "NI",
+        "bandera": "🇳🇮",
+        "genero": "Male",
+        "demo": "/static/casting/es-NI-FedericoNeural.mp3",
+        "desc": "Voz Male de NI"
+    },
+    "es-NI-YolandaNeural": {
+        "nombre": "Yolanda",
+        "pais": "NI",
+        "bandera": "🇳🇮",
+        "genero": "Female",
+        "demo": "/static/casting/es-NI-YolandaNeural.mp3",
+        "desc": "Voz Female de NI"
+    },
+    "es-PA-MargaritaNeural": {
+        "nombre": "Margarita",
+        "pais": "PA",
+        "bandera": "🇵🇦",
+        "genero": "Female",
+        "demo": "/static/casting/es-PA-MargaritaNeural.mp3",
+        "desc": "Voz Female de PA"
+    },
+    "es-PA-RobertoNeural": {
+        "nombre": "Roberto",
+        "pais": "PA",
+        "bandera": "🇵🇦",
+        "genero": "Male",
+        "demo": "/static/casting/es-PA-RobertoNeural.mp3",
+        "desc": "Voz Male de PA"
+    },
+    "es-PY-MarioNeural": {
+        "nombre": "Mario",
+        "pais": "PY",
+        "bandera": "🇵🇾",
+        "genero": "Male",
+        "demo": "/static/casting/es-PY-MarioNeural.mp3",
+        "desc": "Voz Male de PY"
+    },
+    "es-PY-TaniaNeural": {
+        "nombre": "Tania",
+        "pais": "PY",
+        "bandera": "🇵🇾",
+        "genero": "Female",
+        "demo": "/static/casting/es-PY-TaniaNeural.mp3",
+        "desc": "Voz Female de PY"
+    },
+    "es-PE-AlexNeural": {
+        "nombre": "Alex",
+        "pais": "PE",
+        "bandera": "🇵🇪",
+        "genero": "Male",
+        "demo": "/static/casting/es-PE-AlexNeural.mp3",
+        "desc": "Voz Male de PE"
+    },
+    "es-PE-CamilaNeural": {
+        "nombre": "Camila",
+        "pais": "PE",
+        "bandera": "🇵🇪",
+        "genero": "Female",
+        "demo": "/static/casting/es-PE-CamilaNeural.mp3",
+        "desc": "Voz Female de PE"
+    },
+    "es-PR-KarinaNeural": {
+        "nombre": "Karina",
+        "pais": "PR",
+        "bandera": "🇵🇷",
+        "genero": "Female",
+        "demo": "/static/casting/es-PR-KarinaNeural.mp3",
+        "desc": "Voz Female de PR"
+    },
+    "es-PR-VictorNeural": {
+        "nombre": "Victor",
+        "pais": "PR",
+        "bandera": "🇵🇷",
+        "genero": "Male",
+        "demo": "/static/casting/es-PR-VictorNeural.mp3",
+        "desc": "Voz Male de PR"
+    },
+    "es-ES-AlvaroNeural": {
+        "nombre": "Alvaro",
+        "pais": "ES",
+        "bandera": "🇪🇸",
+        "genero": "Male",
+        "demo": "/static/casting/es-ES-AlvaroNeural.mp3",
+        "desc": "Voz Male de ES"
+    },
+    "es-ES-ElviraNeural": {
+        "nombre": "Elvira",
+        "pais": "ES",
+        "bandera": "🇪🇸",
+        "genero": "Female",
+        "demo": "/static/casting/es-ES-ElviraNeural.mp3",
+        "desc": "Voz Female de ES"
+    },
+    "es-US-AlonsoNeural": {
+        "nombre": "Alonso",
+        "pais": "US",
+        "bandera": "🇺🇸",
+        "genero": "Male",
+        "demo": "/static/casting/es-US-AlonsoNeural.mp3",
+        "desc": "Voz Male de US"
+    },
+    "es-US-PalomaNeural": {
+        "nombre": "Paloma",
+        "pais": "US",
+        "bandera": "🇺🇸",
+        "genero": "Female",
+        "demo": "/static/casting/es-US-PalomaNeural.mp3",
+        "desc": "Voz Female de US"
+    },
+    "es-UY-MateoNeural": {
+        "nombre": "Mateo",
+        "pais": "UY",
+        "bandera": "🇺🇾",
+        "genero": "Male",
+        "demo": "/static/casting/es-UY-MateoNeural.mp3",
+        "desc": "Voz Male de UY"
+    },
+    "es-UY-ValentinaNeural": {
+        "nombre": "Valentina",
+        "pais": "UY",
+        "bandera": "🇺🇾",
+        "genero": "Female",
+        "demo": "/static/casting/es-UY-ValentinaNeural.mp3",
+        "desc": "Voz Female de UY"
+    },
+    "es-VE-PaolaNeural": {
+        "nombre": "Paola",
+        "pais": "VE",
+        "bandera": "🇻🇪",
+        "genero": "Female",
+        "demo": "/static/casting/es-VE-PaolaNeural.mp3",
+        "desc": "Voz Female de VE"
+    },
+    "es-VE-SebastianNeural": {
+        "nombre": "Sebastian",
+        "pais": "VE",
+        "bandera": "🇻🇪",
+        "genero": "Male",
+        "demo": "/static/casting/es-VE-SebastianNeural.mp3",
+        "desc": "Voz Male de VE"
+    }
+}

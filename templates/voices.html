@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Casting de Voces - Voceape</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Personalización del reproductor de audio para que sea minimalista */
+        audio::-webkit-media-controls-panel {
+            background-color: #f0f0f3;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #e0e0e5;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body class="bg-[#f7f7f8] text-[#1a1a1a] min-h-screen flex flex-col">
+
+    <nav class="sticky top-0 z-50 bg-[#f7f7f8]/80 backdrop-blur-md border-b border-[#e8e8eb] px-4 py-3">
+        <div class="max-w-[1100px] mx-auto flex items-center justify-between">
+            <a href="/" class="flex items-center gap-2 text-[#555] hover:text-[#1a1a1a] transition-colors">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                <span class="text-xs font-semibold uppercase tracking-wider">Volver al Chat</span>
+            </a>
+            <a href="/">
+                 <img src="static/logos/logo.svg" alt="Voceape" class="w-28">
+            </a>
+            <div class="w-20"></div>
+        </div>
+    </nav>
+
+    <main class="flex-1 overflow-y-auto custom-scrollbar">
+        <header class="max-w-[720px] mx-auto pt-12 pb-8 px-6 text-center">
+            <div
+                class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-white border border-[#e8e8eb] shadow-sm mb-4">
+                <i data-lucide="mic-2" class="w-6 h-6 text-green-600"></i>
+            </div>
+            <h1 class="text-2xl font-bold text-[#18181b] tracking-tight">Casting de Voces</h1>
+            <p class="text-sm text-slate-500 mt-2">Explora y prueba todas las voces disponibles en español.</p>
+
+            <div class="flex items-center justify-center gap-4 mt-6">
+                <div
+                    class="px-4 py-1.5 bg-white border border-[#e8e8eb] rounded-full shadow-sm text-[11px] font-medium text-[#555]">
+                    <strong class="text-[#1a1a1a]">{{ voces | length }}</strong> Voces totales
+                </div>
+                <div
+                    class="px-4 py-1.5 bg-white border border-[#e8e8eb] rounded-full shadow-sm text-[11px] font-medium text-[#555]">
+                    <strong class="text-[#1a1a1a]">{{ paises | length }}</strong> Países
+                </div>
+            </div>
+        </header>
+
+        <div class="max-w-[1100px] mx-auto px-6 pb-20">
+            {% if voces_por_pais %}
+            {% for pais, lista_voces in voces_por_pais.items() %}
+            <div class="mb-12">
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="text-xl">{{ lista_voces[0].bandera }}</span>
+                    <h2 class="text-[13px] font-bold text-[#b0b0b8] uppercase tracking-[0.15em]">{{ pais }}</h2>
+                    <div class="flex-1 h-px bg-[#e8e8eb]"></div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {% for voz in lista_voces %}
+                    <div
+                        class="voice-card bg-white border border-[#e8e8eb] rounded-2xl p-5 hover:border-[#c7c7cd] hover:shadow-md transition-all duration-300 group">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h3 class="text-sm font-bold text-[#1a1a1a]">{{ voz.nombre }}</h3>
+                                <p class="text-[10px] font-mono text-[#aaa] mt-0.5">{{ voz.id }}</p>
+                            </div>
+                            <span
+                                class="px-2 py-1 rounded-md text-[9px] font-bold tracking-wider uppercase 
+                                    {{ 'bg-blue-50 text-blue-500 border border-blue-100' if voz.genero == 'Male' else 'bg-pink-50 text-pink-500 border border-pink-100' }}">
+                                {{ 'Masculino' if voz.genero == 'Male' else 'Femenino' }}
+                            </span>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div class="bg-[#f7f7f8] rounded-xl p-2">
+                                <audio controls src="{{ voz.demo }}" class="w-full h-8 opacity-80"></audio>
+                            </div>
+
+                            <button onclick="copiarNombre('{{ voz.nombre }}', this)"
+                                class="w-full py-2.5 rounded-xl border border-[#e8e8eb] text-[11px] font-semibold text-[#555] hover:bg-[#18181b] hover:text-white hover:border-[#18181b] transition-all flex items-center justify-center gap-2 active:scale-[0.97]">
+                                <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                                <span>Copiar nombre</span>
+                            </button>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="text-center py-20 bg-white border border-dashed border-[#e8e8eb] rounded-3xl">
+                <div class="w-16 h-16 bg-[#f7f7f8] rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i data-lucide="mic-off" class="text-[#ccc] w-8 h-8"></i>
+                </div>
+                <p class="text-sm text-[#888]">No hay muestras de audio disponibles todavía.</p>
+            </div>
+            {% endif %}
+            {% include "footer.html" %}
+        </div>
+        
+    </main>
+
+
+    <script>
+        lucide.createIcons();
+
+        // Función para copiar NOMBRE
+        function copiarNombre(nombre, btn) {
+            navigator.clipboard.writeText(nombre).then(() => {
+                const span = btn.querySelector('span');
+                const originalText = span.innerText;
+                span.innerText = "¡Copiado!";
+                btn.classList.add('bg-green-600', 'text-white', 'border-green-600');
+                setTimeout(() => {
+                    span.innerText = originalText;
+                    btn.classList.remove('bg-green-600', 'text-white', 'border-green-600');
+                }, 2000);
+            });
+        }
+
+        // Funcionalidad de Búsqueda
+        document.getElementById('voice-search').addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            const sections = document.querySelectorAll('.mb-12'); // Los bloques de países
+
+            sections.forEach(section => {
+                const cards = section.querySelectorAll('.voice-card');
+                let hasVisible = false;
+
+                cards.forEach(card => {
+                    const text = card.getAttribute('data-search');
+                    if (text.includes(term)) {
+                        card.style.display = 'block';
+                        hasVisible = true;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                // Oculta el país si no hay voces que coincidan
+                section.style.display = hasVisible ? 'block' : 'none';
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Términos y Privacidad - Voceape</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        .legal-content h3 {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .legal-content p {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #555;
+            margin-bottom: 1rem;
+        }
+
+        .legal-content ul {
+            margin-bottom: 1rem;
+            padding-left: 1.25rem;
+        }
+
+        .legal-content li {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 0.5rem;
+            list-style-type: disc;
+        }
+    </style>
+</head>
+
+<body class="bg-[#f7f7f8] text-[#1a1a1a] min-h-screen flex flex-col">
+
+    <nav class="sticky top-0 z-50 bg-[#f7f7f8]/80 backdrop-blur-md border-b border-[#e8e8eb] px-4 py-3">
+        <div class="max-w-[800px] mx-auto flex items-center justify-between">
+            <a href="/" class="flex items-center gap-2 text-[#555] hover:text-[#1a1a1a] transition-colors">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                <span class="text-xs font-semibold uppercase tracking-wider">Volver</span>
+            </a>
+            <a href="/">
+                <img src="static/logos/logo.svg" alt="Voceape" class="w-28">
+            </a>
+            <div class="w-10"></div>
+        </div>
+    </nav>
+
+    <main class="flex-1 py-12 px-6">
+        <article class="max-w-[700px] mx-auto bg-white border border-[#e8e8eb] rounded-3xl p-8 md:p-12 shadow-sm">
+
+            <header class="mb-10 pb-8 border-b border-[#f0f0f3]">
+                <h1 class="text-2xl font-bold text-[#18181b] tracking-tight">Términos de Uso y Privacidad</h1>
+                <p class="text-xs text-slate-400 mt-2 uppercase tracking-widest font-medium">Última actualización:
+                    Febrero 2026</p>
+            </header>
+
+            <div class="legal-content">
+                <p>Bienvenido a <strong>Voceape</strong>. Al utilizar nuestra plataforma, aceptas de manera íntegra
+                    estos términos. Nuestra misión es ofrecer herramientas creativas respetando siempre la integridad y
+                    privacidad de nuestros usuarios.</p>
+
+                <h3>1. Uso del Servicio</h3>
+                <p>Voceape proporciona una herramienta de generación de voz basada en IA. Al usarla, te comprometes a:
+                </p>
+                <ul>
+                    <li>No generar contenido que promueva el odio, la discriminación o la violencia.</li>
+                    <li>No utilizar las voces para suplantar la identidad de figuras públicas o personas privadas sin su
+                        consentimiento expreso.</li>
+                    <li>No realizar ataques automatizados o scraping que comprometan la estabilidad del servidor.</li>
+                </ul>
+
+                <h3>2. Privacidad de Datos</h3>
+                <p>Tu privacidad es el pilar de nuestra herramienta:</p>
+                <ul>
+                    <li><strong>No Almacenamiento:</strong> No guardamos los textos que envías para generar audio. Una
+                        vez procesada la petición, el texto se elimina de la memoria volátil.</li>
+                    <li><strong>Archivos Temporales:</strong> Los audios generados se sirven mediante streaming o
+                        descarga directa y no se almacenan en nuestros servidores de forma permanente.</li>
+                    <li><strong>Seguridad:</strong> Implementamos medidas de protección para evitar el acceso no
+                        autorizado a las funciones del backend.</li>
+                </ul>
+
+                <h3>3. Propiedad de las Creaciones</h3>
+                <p>Voceape no reclama derechos sobre el audio resultante. Eres el único propietario y responsable del
+                    uso que des a los archivos descargados, debiendo cumplir con las normativas locales de derechos de
+                    autor y ética digital.</p>
+
+                <h3>4. Limitaciones</h3>
+                <p>El servicio se ofrece "tal cual". Nos reservamos el derecho de limitar el acceso (Rate Limiting) para
+                    prevenir el abuso del sistema y asegurar que todos los usuarios disfruten de una velocidad óptima.
+                </p>
+
+                <div class="mt-12 p-6 bg-[#f7f7f8] rounded-2xl border border-[#e8e8eb]">
+                    <p class="text-[13px] text-[#888] italic mb-0">
+                        Si tienes dudas sobre estos términos, puedes contactarnos a través de nuestra plataforma
+                        principal. Gracias por confiar en Voceape para tus proyectos creativos.
+                    </p>
+                </div>
+            </div>
+        </article>
+        {% include "footer.html" %}
+    </main>
+
+
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>
