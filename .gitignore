@@ -29,8 +29,7 @@ Desktop.ini
 
 # --- 🎵 Archivos de Audio ---
 # Ignora audios sueltos que se puedan generar por pruebas
-*.mp3
-*.wav
+
 
 # --- 🚨 EXCEPCIONES (Lo que SÍ queremos subir) ---
 # Queremos ignorar todos los mp3, PERO necesitamos los del casting para que la web funcione.
