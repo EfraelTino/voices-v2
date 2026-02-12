@@ -20,7 +20,7 @@ from slowapi.errors import RateLimitExceeded
 #  CONFIGURACIÓN
 # =============================================================
 
-DOMINIO = "tudominio.com"
+DOMINIO = "voices-v2.onrender.com"
 ORIGENES_PERMITIDOS = [
     f"https://{DOMINIO}",
     f"https://www.{DOMINIO}",
