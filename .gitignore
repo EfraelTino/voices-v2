@@ -35,8 +35,3 @@ Desktop.ini
 # --- 🚨 EXCEPCIONES (Lo que SÍ queremos subir) ---
 # Queremos ignorar todos los mp3, PERO necesitamos los del casting para que la web funcione.
 # El signo '!' significa "No ignorar esto".
-
-muestras_voces
-kokoro-v0_19.onnx
-voices.json
-voices-v1.0.bin
