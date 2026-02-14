@@ -24,12 +24,14 @@ DOMINIO = "voices-v2.onrender.com"
 ORIGENES_PERMITIDOS = [
     f"https://{DOMINIO}",
     f"https://www.{DOMINIO}",
+    f"https://voices-v2-production.up.railway.app/",
     # Descomenta SOLO para desarrollo local:
     "http://localhost:8000",
 ]
 HOSTS_PERMITIDOS = [
     DOMINIO,
     f"www.{DOMINIO}",
+    f"voices-v2-production.up.railway.app",
     # Descomenta para desarrollo local:
     "localhost",
 ]
